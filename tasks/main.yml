@@ -9,3 +9,7 @@
 - include: facts.yml
 - include: jenkins-jar.yml
 - include: plugins.yml
+
+- debug:
+    msg: "The admin password is {{ jenkins_admin_password }}"
+    verbosity: 2

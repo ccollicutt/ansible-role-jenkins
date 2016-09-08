@@ -38,7 +38,7 @@ It's located in */var/lib/jenkins/secrets/initialAdminPassword*. That password i
     - jenkins_plugins_custom:
         - ansible
   roles:
-    - jenkins
+    - serverascode.jenkins
 ```
 
 ## Thanks

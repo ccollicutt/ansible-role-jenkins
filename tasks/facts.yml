@@ -7,7 +7,3 @@
 
 - set_fact:
     jenkins_admin_password: "{{ initial_admin_password.stdout }}"
-
-- debug:
-    msg: "The default admin password is {{ jenkins_admin_password }}"
-    verbosity: 2
