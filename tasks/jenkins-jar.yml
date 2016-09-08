@@ -1,0 +1,11 @@
+---
+
+- name: get the jenkins-cli jarfile from the local jenkins server
+  get_url:
+    url: "https://localhost:8443/jnlpJars/jenkins-cli.jar"
+    dest: "{{ jenkins_jar_location }}"
+    validate_certs: False
+  register: jarfile_get
+  until: "'OK' in jarfile_get.msg or 'file already exists' in jarfile_get.msg"
+  retries: 5
+  delay: 10

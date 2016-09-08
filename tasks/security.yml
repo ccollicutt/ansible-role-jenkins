@@ -1,0 +1,17 @@
+---
+
+#
+# NOTE: Mostly taken from geerlingguy.jenkins role
+# - https://github.com/geerlingguy/ansible-role-jenkins
+# Thanks kindly to Geerlingguy.
+#
+
+- name: disable jenkins setup wizard
+  copy:
+    dest: "/var/lib/jenkins/jenkins.install.InstallUtil.lastExecVersion"
+    content: 2.0
+    owner: "jenkins"
+    group: "jenkins"
+    mode: "0755"
+  notify: 
+    - restart jenkins

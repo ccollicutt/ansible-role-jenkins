@@ -1,0 +1,36 @@
+---
+
+jenkins_etc_dir: "/etc/jenkins"
+jenkins_jks_password: "jenkins"
+jenkins_jks_name: "jenkins.jks"
+jenkins_ssl_key_name: "ssl.key"
+jenkins_ssl_cert_name: "ssl.cert"
+#jenkins_ssl_subj: "/C=CA/ST=Alberta/L=Edmonton/O=IT/CN={{ ansible_fqdn }}"
+jenkins_ssl_subj: "/C=CA/ST=Alberta/L=Edmonton/O=IT/CN=localhost"
+jenkins_home: "/var/lib/jenkins"
+jenkins_jar_location: "/opt/jenkins-cli.jar"
+jenkins_plugins_custom: []
+
+java_packages:
+  -  default-jdk
+
+jenkins_plugins_recommended: 
+  - ant
+  - antisamy-markup-formatter
+  - build-timeout
+  - cloudbees-folder
+  - credentials-binding
+  - email-ext
+  - git
+  - gradle
+  - ldap
+  - mailer
+  - matrix-auth
+  - pam-auth
+  - pipeline-stage-view
+  - ssh-slaves
+  - subversion
+  - timestamper
+  - workflow-aggregator
+  - github-organization-folder
+  - ws-cleanup

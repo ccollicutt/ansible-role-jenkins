@@ -1,0 +1,11 @@
+---
+
+- name: install jenkins apt key
+  apt_key: 
+    url: "https://pkg.jenkins.io/debian/jenkins-ci.org.key"
+
+- name: install the repo
+  apt_repository: 
+    repo: "deb http://pkg.jenkins.io/debian-stable binary/"
+
+

@@ -1,0 +1,49 @@
+---
+
+#
+# NOTE: Mostly taken from geerlingguy.jenkins role
+# - https://github.com/geerlingguy/ansible-role-jenkins
+# Thanks kindly to Geerlingguy.
+#
+
+# Jenkins doesn't allow updates via CLI, though that is required before plugins
+# can be installed via CLI. See: https://gist.github.com/rowan-m/1026918
+- name: create jenkins updates folder
+  file:
+    path: "{{ jenkins_home }}/updates"
+    owner: "jenkins"
+    group: "jenkins"
+    mode: "0755"
+    state: directory
+  register: jenkins_plugins_folder_create
+
+- name: update jenkins plugin data
+  shell: 
+    curl -L https://updates.jenkins-ci.org/update-center.json | 
+    sed '1d;$d' > "{{ jenkins_home }}/updates/default.json"
+  args:
+    creates: "{{ jenkins_home }}/updates/default.json"
+
+- name: permissions for default.json updates info
+  file:
+    path: "{{ jenkins_home }}/updates/default.json"
+    owner: "jenkins"
+    group: "jenkins"
+    mode: "0755"
+  when: jenkins_plugins_folder_create.changed
+
+# NOTE: Using self-signed certificate
+- name: install jenkins plugins using admin password
+  command:
+    java -Djavax.net.ssl.trustStore={{ jenkins_etc_dir }}/{{ jenkins_jks_name }} 
+    -Djavax.net.ssl.trustStorePassword={{ jenkins_jks_password }}
+    -jar {{ jenkins_jar_location }} -s https://localhost:8443/
+    install-plugin {{ item }}
+    --username admin
+    --password {{ jenkins_admin_password }}
+  args:
+    creates: "{{ jenkins_home }}/plugins/{{ item }}.jpi"
+  with_flattened: 
+    - "{{ jenkins_plugins_recommended }}"
+    - "{{ jenkins_plugins_custom }}"
+  notify: restart jenkins

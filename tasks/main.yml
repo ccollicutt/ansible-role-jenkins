@@ -1,0 +1,11 @@
+---
+
+- include: java-install.yml
+- include: repo.yml
+- include: install.yml
+- include: configure.yml
+- include: security.yml
+- include: ssl.yml
+- include: facts.yml
+- include: jenkins-jar.yml
+- include: plugins.yml

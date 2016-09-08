@@ -1,0 +1,38 @@
+---
+
+- name: ensure /etc/jenkins exists
+  file:
+    path: "/etc/jenkins"
+    state: "directory"
+    owner: "jenkins"
+    group: "jenkins"
+    mode: "0750"
+
+- name: create self-signed certificates
+  shell: 
+    openssl req -new -nodes -x509 
+    -subj "{{ jenkins_ssl_subj }}" 
+    -days 3650 
+    -keyout "{{ jenkins_ssl_key_name }}" 
+    -out "{{ jenkins_ssl_cert_name }}" 
+    -extensions v3_ca 
+  args:
+    chdir: "{{ jenkins_etc_dir }}"
+    creates: "{{ jenkins_etc_dir }}/{{ jenkins_ssl_key_name }}"
+
+# Jenkins 2+ and Java 8 only seem to work with Java key store
+- name: create java keystore using self-signed certificates
+  shell: 
+    openssl pkcs12 
+    -export 
+    -in {{ jenkins_ssl_cert_name }} 
+    -inkey {{ jenkins_ssl_key_name }} 
+    -out {{ jenkins_jks_name }} 
+    -name "jenkins" 
+    -password pass:{{ jenkins_jks_password }}
+  args:
+    chdir: "{{ jenkins_etc_dir }}"
+    creates: "{{ jenkins_jks_name }}"
+  notify: restart jenkins
+
+- meta: flush_handlers

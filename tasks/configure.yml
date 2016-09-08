@@ -1,0 +1,22 @@
+---
+# FIXME: This is required for the java cli to work, but what 
+# does this actually enable? Is it less secure with this enabled?
+# Without this jenkins jar cli will fail
+- name: ensure slaveAgentPort is set to 0 in config.xml
+  lineinfile:
+    dest: "/var/lib/jenkins/config.xml"
+    regexp: ".*<slaveAgentPort>.*"
+    line: "  <slaveAgentPort>0</slaveAgentPort>"
+  notify:
+    - restart jenkins
+
+- meta: flush_handlers
+
+# We don't need to restart until the ssl certs are setup
+- name: install /etc/default/jenkins from template
+  template:
+    src: "default"
+    dest: "/etc/default/jenkins"
+  notify: 
+    - restart jenkins
+
