@@ -4,7 +4,7 @@ This role is meant to install a very specific version of Jenkins.
 
 * Ubuntu Xenial 16.04
 * Self-signed certificate
-* https only on port 8443
+* https only on port 8443, no http
 * Install plugins automatically
 * Keep it as simple as possible
 
@@ -18,7 +18,7 @@ The only real option is what other plugins you would like. There is a *jenkins_p
 
 ## Admin password
 
-Jenkins 2.0 seems to create an initial Admin password.
+Jenkins 2+ seems to create an initial Admin password.
 
 It's located in */var/lib/jenkins/secrets/initialAdminPassword*. That password is also set as a fact in this role, and it's assigned to the fact *jenkins_admin_password*.
 
@@ -41,3 +41,6 @@ It's located in */var/lib/jenkins/secrets/initialAdminPassword*. That password i
     - jenkins
 ```
 
+## Thanks
+
+Thanks to [geerlingguy](https://github.com/geerlingguy) for his [Jenkins role](https://github.com/geerlingguy/ansible-role-jenkins) for inspiration.
